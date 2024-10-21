@@ -1,0 +1,12 @@
+[package]
+name = "nostr-ia-jokester"
+version = "0.1.0"
+edition = "2021"
+authors = ["Minimo <minimo@tuta.io>"]
+repository = "https://github.com/minimo-io/nostr-ia-jokester.git"
+license = "MIT"
+
+[dependencies]
+dotenv = "0.15.0"
+nostr-sdk = "0.35"
+tokio = "1.40.0"
