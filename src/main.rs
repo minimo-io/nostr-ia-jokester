@@ -1,12 +1,17 @@
-use dotenv::dotenv;
+use dotenvy::dotenv;
 use nostr_sdk::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenv().ok();
-    let bot_nsec = std::env::var("BOT_NSEC").expect("> You need an nsec honey.");
-    let keys = Keys::parse(bot_nsec).expect("Could not derive keys."); // get keys from secret
-    println!("Public key: {}", keys.public_key);
+    let bot_nsec =
+        std::env::var("BOT_NSEC").expect("> You need an nsec in your .env honey (BOT_NSEC=).");
+    // get public keys from nsec
+    let keys = Keys::parse(&bot_nsec).expect("Could not derive keys.");
+    let npub = keys.public_key.to_bech32().unwrap();
+
+    println!("hex: {}", keys.public_key);
+    println!("npub: {npub}");
 
     // Create keys -------------------------------------------------------------
     // let my_keys: Keys = Keys::generate();
