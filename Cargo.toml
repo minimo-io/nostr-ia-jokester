@@ -7,6 +7,7 @@ repository = "https://github.com/minimo-io/nostr-ia-jokester.git"
 license = "MIT"
 
 [dependencies]
+clap = "4.5.20"
 dotenvy = "0.15.7"
 nostr-sdk = "0.35"
 tokio = "1.40.0"
