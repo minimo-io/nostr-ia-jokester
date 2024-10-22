@@ -1,36 +1,24 @@
-use clap::{Arg, Command};
+// Copyright ⓒ 2024-2024 minimo-io
+// Licensed under the MIT license
+// (see LICENSE or <http://opensource.org/licenses/MIT>) All files in the project carrying such
+// notice may not be copied, modified, or distributed except according to those terms.
+
+//! > **A (not so) funny AI joker Bot for Nostr written in Rust, using open-source LLMs.**
+//!
+//! ## Aspirations
+//!
+//! Use LLMs models via Ollama like [Hermes-3-8B](https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B)
+//! [Llama-3.2-3B-Uncensored](https://huggingface.co/mradermacher/Llama-3.2-3B-Instruct-uncensored-GGUF)
+//! or [Dolphin-2.9.4-llama3.1-8b](https://huggingface.co/cognitivecomputations/dolphin-2.9.4-llama3.1-8b-gguf)
+//! to create an IA Bot for Nostr that sends rustic jokes when pinged via a PM.
+
 use dotenvy::dotenv;
+use nostr_ia_jokester::cli;
 use nostr_sdk::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // Parse arguemnts
-    let m = Command::new("Nostr IA Jokester")
-        .about("A (not so) funny AI joker Bot for Nostr written in Rust, using open-source LLMs.")
-        // .subcommand_required(true)
-        .arg_required_else_help(true)
-        .arg(
-            Arg::new("generate-keys")
-                .long("generate-keys")
-                .short('G')
-                .help("Generates new keys")
-                .action(clap::ArgAction::SetTrue), // This will set the value to true if the argument is present
-        )
-        .arg(
-            Arg::new("list-keys")
-                .long("list-keys")
-                .short('L')
-                .help("List all bot keys already generateed")
-                .action(clap::ArgAction::SetTrue), // This will set the value to true if the argument is present
-        )
-        .arg(
-            Arg::new("run")
-                .long("run")
-                .short('R')
-                .help("Run the jokester!")
-                .action(clap::ArgAction::SetTrue), // This will set the value to true if the argument is present
-        )
-        .get_matches();
+    let m = cli().get_matches();
 
     // Parse arguments
     if m.get_flag("generate-keys") {
@@ -54,7 +42,9 @@ async fn main() -> Result<()> {
         // get public keys from nsec
         let keys = Keys::parse(&bot_nsec).expect("Could not derive keys.");
         let npub = keys.public_key.to_bech32().unwrap();
-        println!("hex: {}", keys.public_key);
+
+        println!("nsec: {}", &bot_nsec);
+        println!("hex public: {}", keys.public_key);
         println!("npub: {npub}");
     }
 
